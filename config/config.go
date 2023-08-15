@@ -61,8 +61,8 @@ func Load() error {
 		return errors.New("EnvAccessKeyNotFound: AWS_REGION not found in environment")
 	}
 
-	Config.AwsRegion = strings.TrimSpace(os.Getenv("AWS_SNS_TOPIC_ARN"))
-	if Config.AwsRegion == "" {
+	Config.AwsSnsTopicArn = strings.TrimSpace(os.Getenv("AWS_SNS_TOPIC_ARN"))
+	if Config.AwsSnsTopicArn == "" {
 		return errors.New("EnvAccessKeyNotFound: AWS_SNS_TOPIC_ARN not found in environment")
 	}
 
