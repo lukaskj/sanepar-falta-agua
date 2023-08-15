@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-docker compose up
+docker compose -p sanepar-falta-agua up
 mkdir -p ~/sanepar-falta-agua
 cp ./.env.example ~/sanepar-falta-agua/.env
 cp ./dist/sanepar-falta-agua ~/sanepar-falta-agua/sanepar-falta-agua
