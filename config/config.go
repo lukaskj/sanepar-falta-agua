@@ -82,6 +82,4 @@ func loadEmailSentJson() {
 	contents, _ := io.ReadAll(jsonFile)
 
 	json.Unmarshal(contents, &Config.emailSentAt)
-
-	fmt.Println(Config.emailSentAt)
 }
