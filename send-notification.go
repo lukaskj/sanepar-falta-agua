@@ -35,7 +35,7 @@ func sendSNSNotification(message string) {
 
 	svc := sns.New(sess)
 
-	result, err := svc.Publish(&sns.PublishInput{
+	_, err = svc.Publish(&sns.PublishInput{
 		Message:  &message,
 		TopicArn: &config.Config.AwsSnsTopicArn,
 	})
@@ -43,6 +43,4 @@ func sendSNSNotification(message string) {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-
-	fmt.Println(*result.MessageId)
 }
