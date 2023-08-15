@@ -19,6 +19,7 @@ func Start() {
 	//
 	signal.Notify(quitChannel, syscall.SIGINT, syscall.SIGTERM)
 	<-quitChannel
+
 	config.SaveConfigJson()
 
 	fmt.Println("Exiting...")
