@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"os"
 	"os/signal"
 	"syscall"
@@ -26,13 +26,12 @@ func Start() {
 
 	config.SaveConfigJson()
 
-	fmt.Println("Exiting...")
+	log.Println("Exiting...")
 }
 
 func mainLoop() {
 	for {
-		fmt.Printf("%v+\n", time.Now())
-		SendNotificationMessage("Test from golang.")
+		SendSaneparRequest(&config.Config.SaneparBaseUrl, &config.Config.SaneparClientId)
 		time.Sleep(time.Duration(config.Config.TimeLoopSeconds) * time.Second)
 	}
 }

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -18,7 +18,7 @@ func SendNotificationMessage(message string) {
 }
 
 func sendSNSNotification(message string) {
-	fmt.Println("[-] Sending notification at " + time.Now().Format(time.DateTime))
+	log.Println("[-] Sending notification at " + time.Now().Format(time.DateTime))
 
 	creds := credentials.NewEnvCredentials()
 
@@ -41,6 +41,6 @@ func sendSNSNotification(message string) {
 	})
 
 	if err != nil {
-		fmt.Println(err.Error())
+		log.Fatalln(err.Error())
 	}
 }

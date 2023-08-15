@@ -3,7 +3,6 @@ package config
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"log"
 	"os"
@@ -92,7 +91,7 @@ func IsnotificationSentToday() bool {
 }
 
 func SaveConfigJson() {
-	fmt.Println("Saving json file")
+	log.Println("Saving json file")
 
 	jsonStr, err := json.Marshal(Config.NotificationSentAt)
 	if err != nil {
@@ -106,7 +105,7 @@ func loadnotificationSentJson() {
 	jsonFile, err := os.Open(Config.JsonFileName)
 	// if we os.Open returns an error then handle it
 	if err != nil {
-		fmt.Println(err)
+		log.Println(err)
 		return
 	}
 	defer jsonFile.Close()
