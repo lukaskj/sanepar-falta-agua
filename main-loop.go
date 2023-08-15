@@ -13,7 +13,11 @@ import (
 var quitChannel = make(chan os.Signal, 1)
 
 func Start() {
-	config.Load()
+	errLoadConfig := config.Load()
+	if errLoadConfig != nil {
+		panic(errLoadConfig)
+	}
+
 	go mainLoop()
 
 	//
@@ -28,6 +32,7 @@ func Start() {
 func mainLoop() {
 	for {
 		fmt.Printf("%v+\n", time.Now())
+		SendNotificationMessage("Test from golang.")
 		time.Sleep(time.Duration(config.Config.TimeLoopSeconds) * time.Second)
 	}
 }
