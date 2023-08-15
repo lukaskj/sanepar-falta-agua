@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -30,8 +31,21 @@ func Start() {
 }
 
 func mainLoop() {
+	log.Println()
+	log.Println("[+] Starting...")
 	for {
-		SendSaneparRequest(&config.Config.SaneparBaseUrl, &config.Config.SaneparClientId)
+		response := SendSaneparRequest(&config.Config.SaneparBaseUrl, &config.Config.SaneparClientId)
+		if response.Mensagem != "NADA CONSTA" {
+
+			messageToSend := fmt.Sprintf("\nPrevisão: %s %s\nNormalização: %s %s", response.PrevisaoData, response.PrevisaoHora, response.NormalizacaoData, response.NormalizacaoHora)
+			log.Printf("[+] Message: %s\n", messageToSend)
+			if !config.IsNotificationSentToday() {
+				SendNotificationMessage(messageToSend)
+				config.SetNotificationSentToday(true)
+			} else {
+				log.Println("[-] Message already sent before...")
+			}
+		}
 		time.Sleep(time.Duration(config.Config.TimeLoopSeconds) * time.Second)
 	}
 }

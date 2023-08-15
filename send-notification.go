@@ -18,7 +18,7 @@ func SendNotificationMessage(message string) {
 }
 
 func sendSNSNotification(message string) {
-	log.Println("[-] Sending notification at " + time.Now().Format(time.DateTime))
+	log.Println("[+] Sending notification at " + time.Now().Format(time.DateTime))
 
 	creds := credentials.NewEnvCredentials()
 

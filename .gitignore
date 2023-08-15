@@ -1,3 +1,5 @@
 .env
 *.json
 *.exe
+dist/
+*.log

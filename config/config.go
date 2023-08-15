@@ -65,43 +65,46 @@ func Load() error {
 		return errors.New("EnvAccessKeyNotFound: AWS_SNS_TOPIC_ARN not found in environment")
 	}
 
-	loadnotificationSentJson()
+	loadNotificationSentJson()
+
+	log.Printf("Time Loop Seconds: %d\n", Config.TimeLoopSeconds)
+	log.Printf("Sent notifications JSON filename: %s\n", Config.JsonFileName)
 
 	return nil
 }
 
-func IsnotificationSentAt(dateStr string) bool {
+func IsNotificationSentAt(dateStr string) bool {
 	return Config.NotificationSentAt[dateStr]
 }
 
-func SetnotificationSentAt(dateStr string, val bool) {
+func SetNotificationSentAt(dateStr string, val bool) {
 	Config.NotificationSentAt[dateStr] = val
 }
 
-func SetnotificationSentToday(val bool) {
+func SetNotificationSentToday(val bool) {
 	dateStr := utils.CurrentDateStr()
 
 	Config.NotificationSentAt[dateStr] = val
 }
 
-func IsnotificationSentToday() bool {
+func IsNotificationSentToday() bool {
 	date := utils.CurrentDateStr()
 
 	return Config.NotificationSentAt[date]
 }
 
 func SaveConfigJson() {
-	log.Println("Saving json file")
+	log.Println("Saving json file...")
 
 	jsonStr, err := json.Marshal(Config.NotificationSentAt)
 	if err != nil {
-		print("Error: %s\n", err.Error())
+		log.Printf("Error: %s\n", err.Error())
 	} else {
 		os.WriteFile(Config.JsonFileName, jsonStr, 0644)
 	}
 }
 
-func loadnotificationSentJson() {
+func loadNotificationSentJson() {
 	jsonFile, err := os.Open(Config.JsonFileName)
 	// if we os.Open returns an error then handle it
 	if err != nil {
