@@ -6,16 +6,18 @@ import (
 	"io"
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/joho/godotenv"
 	"github.com/lukaskj/sanepar-falta-agua/utils"
 )
 
 type TConfig struct {
-	emailSentAt     map[string]bool
-	saneparBaseUrl  string
-	saneparClientId string
-	jsonFileName    string
+	EmailSentAt     map[string]bool
+	SaneparBaseUrl  string
+	SaneparClientId string
+	JsonFileName    string
+	TimeLoopSeconds int
 }
 
 var Config TConfig
@@ -28,50 +30,58 @@ func Load() {
 		log.Fatal("Error loading .env file")
 	}
 
-	Config = TConfig{emailSentAt: make(map[string]bool)}
-	Config.saneparBaseUrl = os.Getenv("SANEPAR_BASE_URL")
-	Config.saneparClientId = os.Getenv("SANEPAR_CLIENT_ID")
-	Config.jsonFileName = os.Getenv("SENT_EMAILS_JSON_FILENAME")
-	if Config.jsonFileName == "" {
-		Config.jsonFileName = "email_sent_at.json"
+	Config = TConfig{EmailSentAt: make(map[string]bool)}
+	Config.SaneparBaseUrl = os.Getenv("SANEPAR_BASE_URL")
+	Config.SaneparClientId = os.Getenv("SANEPAR_CLIENT_ID")
+	Config.JsonFileName = os.Getenv("SENT_EMAILS_JSON_FILENAME")
+	if Config.JsonFileName == "" {
+		Config.JsonFileName = "email_sent_at.json"
+	}
+	timeSecondsStr := os.Getenv("TIME_LOOP_SECONDS")
+	if timeSecondsStr == "" {
+		timeSecondsStr = "60"
+	}
+	Config.TimeLoopSeconds, err = strconv.Atoi(timeSecondsStr)
+	if err != nil {
+		Config.TimeLoopSeconds = 60
 	}
 
 	loadEmailSentJson()
 }
 
 func IsEmailSentAt(dateStr string) bool {
-	return Config.emailSentAt[dateStr]
+	return Config.EmailSentAt[dateStr]
 }
 
 func SetEmailSentAt(dateStr string, val bool) {
-	Config.emailSentAt[dateStr] = val
+	Config.EmailSentAt[dateStr] = val
 }
 
 func SetEmailSentToday(val bool) {
 	dateStr := utils.CurrentDateStr()
 
-	Config.emailSentAt[dateStr] = val
+	Config.EmailSentAt[dateStr] = val
 }
 
 func IsEmailSentToday() bool {
 	date := utils.CurrentDateStr()
 
-	return Config.emailSentAt[date]
+	return Config.EmailSentAt[date]
 }
 
 func SaveConfigJson() {
 	fmt.Println("Saving json file")
 
-	jsonStr, err := json.Marshal(Config.emailSentAt)
+	jsonStr, err := json.Marshal(Config.EmailSentAt)
 	if err != nil {
 		print("Error: %s\n", err.Error())
 	} else {
-		os.WriteFile(Config.jsonFileName, jsonStr, 0644)
+		os.WriteFile(Config.JsonFileName, jsonStr, 0644)
 	}
 }
 
 func loadEmailSentJson() {
-	jsonFile, err := os.Open(Config.jsonFileName)
+	jsonFile, err := os.Open(Config.JsonFileName)
 	// if we os.Open returns an error then handle it
 	if err != nil {
 		fmt.Println(err)
@@ -81,5 +91,5 @@ func loadEmailSentJson() {
 
 	contents, _ := io.ReadAll(jsonFile)
 
-	json.Unmarshal(contents, &Config.emailSentAt)
+	json.Unmarshal(contents, &Config.EmailSentAt)
 }

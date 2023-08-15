@@ -27,7 +27,7 @@ func Start() {
 
 func mainLoop() {
 	for {
-		// fmt.Printf("%v+\n", time.Now())
-		time.Sleep(time.Second)
+		fmt.Printf("%v+\n", time.Now())
+		time.Sleep(time.Duration(config.Config.TimeLoopSeconds) * time.Second)
 	}
 }
