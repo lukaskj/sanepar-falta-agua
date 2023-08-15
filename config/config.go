@@ -13,7 +13,7 @@ import (
 )
 
 type TConfig struct {
-	EmailSentAt     map[string]bool
+	NotificationSentAt     map[string]bool
 	SaneparBaseUrl  string
 	SaneparClientId string
 	JsonFileName    string
@@ -30,12 +30,12 @@ func Load() {
 		log.Fatal("Error loading .env file")
 	}
 
-	Config = TConfig{EmailSentAt: make(map[string]bool)}
+	Config = TConfig{NotificationSentAt: make(map[string]bool)}
 	Config.SaneparBaseUrl = os.Getenv("SANEPAR_BASE_URL")
 	Config.SaneparClientId = os.Getenv("SANEPAR_CLIENT_ID")
-	Config.JsonFileName = os.Getenv("SENT_EMAILS_JSON_FILENAME")
+	Config.JsonFileName = os.Getenv("SENT_NOTIFICATIONS_JSON_FILENAME")
 	if Config.JsonFileName == "" {
-		Config.JsonFileName = "email_sent_at.json"
+		Config.JsonFileName = "notifications_sent_at.json"
 	}
 	timeSecondsStr := os.Getenv("TIME_LOOP_SECONDS")
 	if timeSecondsStr == "" {
@@ -46,33 +46,33 @@ func Load() {
 		Config.TimeLoopSeconds = 60
 	}
 
-	loadEmailSentJson()
+	loadnotificationSentJson()
 }
 
-func IsEmailSentAt(dateStr string) bool {
-	return Config.EmailSentAt[dateStr]
+func IsnotificationSentAt(dateStr string) bool {
+	return Config.NotificationSentAt[dateStr]
 }
 
-func SetEmailSentAt(dateStr string, val bool) {
-	Config.EmailSentAt[dateStr] = val
+func SetnotificationSentAt(dateStr string, val bool) {
+	Config.NotificationSentAt[dateStr] = val
 }
 
-func SetEmailSentToday(val bool) {
+func SetnotificationSentToday(val bool) {
 	dateStr := utils.CurrentDateStr()
 
-	Config.EmailSentAt[dateStr] = val
+	Config.NotificationSentAt[dateStr] = val
 }
 
-func IsEmailSentToday() bool {
+func IsnotificationSentToday() bool {
 	date := utils.CurrentDateStr()
 
-	return Config.EmailSentAt[date]
+	return Config.NotificationSentAt[date]
 }
 
 func SaveConfigJson() {
 	fmt.Println("Saving json file")
 
-	jsonStr, err := json.Marshal(Config.EmailSentAt)
+	jsonStr, err := json.Marshal(Config.NotificationSentAt)
 	if err != nil {
 		print("Error: %s\n", err.Error())
 	} else {
@@ -80,7 +80,7 @@ func SaveConfigJson() {
 	}
 }
 
-func loadEmailSentJson() {
+func loadnotificationSentJson() {
 	jsonFile, err := os.Open(Config.JsonFileName)
 	// if we os.Open returns an error then handle it
 	if err != nil {
@@ -91,5 +91,5 @@ func loadEmailSentJson() {
 
 	contents, _ := io.ReadAll(jsonFile)
 
-	json.Unmarshal(contents, &Config.EmailSentAt)
+	json.Unmarshal(contents, &Config.NotificationSentAt)
 }
