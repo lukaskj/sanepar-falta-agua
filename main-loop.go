@@ -37,11 +37,11 @@ func mainLoop() {
 		response := SendSaneparRequest(&config.Config.SaneparBaseUrl, &config.Config.SaneparClientId)
 		if response.Mensagem != "NADA CONSTA" {
 
-			messageToSend := fmt.Sprintf("\nPrevisão: %s %s\nNormalização: %s %s", response.PrevisaoData, response.PrevisaoHora, response.NormalizacaoData, response.NormalizacaoHora)
+			messageToSend := fmt.Sprintf("%s\nPrevisão: %s %s\nNormalização: %s %s", config.Config.Env, response.PrevisaoData, response.PrevisaoHora, response.NormalizacaoData, response.NormalizacaoHora)
 			log.Printf("[+] Message: %s\n", messageToSend)
-			if !config.IsNotificationSentToday() {
+			if !config.IsNotificationSent(&response) {
 				SendNotificationMessage(messageToSend)
-				config.SetNotificationSentToday(true)
+				config.SetNotificationSent(&response, true)
 			} else {
 				log.Println("[-] Message already sent before...")
 			}

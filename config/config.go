@@ -10,10 +10,11 @@ import (
 	"strings"
 
 	"github.com/joho/godotenv"
-	"github.com/lukaskj/sanepar-falta-agua/utils"
+	"github.com/lukaskj/sanepar-falta-agua/types"
 )
 
 type TConfig struct {
+	Env                string
 	NotificationSentAt map[string]bool
 	SaneparBaseUrl     string
 	SaneparClientId    string
@@ -33,6 +34,7 @@ func Load() error {
 
 	Config = TConfig{NotificationSentAt: make(map[string]bool)}
 
+	Config.Env = strings.TrimSpace(os.Getenv("ENV"))
 	Config.SaneparBaseUrl = strings.TrimSpace(os.Getenv("SANEPAR_BASE_URL"))
 	Config.SaneparClientId = strings.TrimSpace(os.Getenv("SANEPAR_CLIENT_ID"))
 	if Config.SaneparBaseUrl == "" || Config.SaneparClientId == "" {
@@ -81,16 +83,16 @@ func SetNotificationSentAt(dateStr string, val bool) {
 	Config.NotificationSentAt[dateStr] = val
 }
 
-func SetNotificationSentToday(val bool) {
-	dateStr := utils.CurrentDateStr()
-
-	Config.NotificationSentAt[dateStr] = val
+func SetNotificationSent(faltaAguaResponse *types.TFaltaAguaResponse, val bool) {
+	id := faltaAguaResponse.GetId()
+	
+	Config.NotificationSentAt[id] = val
 }
 
-func IsNotificationSentToday() bool {
-	date := utils.CurrentDateStr()
+func IsNotificationSent(faltaAguaResponse *types.TFaltaAguaResponse) bool {
+	id := faltaAguaResponse.GetId()
 
-	return Config.NotificationSentAt[date]
+	return Config.NotificationSentAt[id]
 }
 
 func SaveConfigJson() {
