@@ -45,6 +45,15 @@ AWS_SNS_TOPIC_ARN=
 The `SANEPAR_BASE_URL` and `SANEPAR_CLIENT_ID` settings were achieved using the HTTPS proxy [mitmproxy](https://mitmproxy.org/) by selecting the "Lack of water" option in the application and checking which URL is called to return the desired data.<br>
 __Reason:__ As this service is not publicly available, it was necessary to check which requests the application makes to fetch water shortage information.
 
+## Build
+### Golang
+```bash
+go build .
+```
+### Docker
+```bash
+docker compose -p sanepar-falta-agua up
+```
 
 <br>
 <br>
