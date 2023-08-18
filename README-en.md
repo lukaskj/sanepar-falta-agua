@@ -21,6 +21,9 @@ The language chosen was [`Golang`](https://go.dev/) due to the interest of learn
 This software is simply a loop that keeps making a request to Sanepar's water shortage endpoint and, depending on the response, sends a message to the SNS topic which then sends the notification to subscribers to the topic. <br>
 The type of notification on SNS is up to the developer. What I am using is SMS sending.
 
+Example SMS:<br>
+<img src="img/sms.png" width="350px" />
+
 ### Configuration
 The `.env` file is responsible for the configuration.<br>
 It is also possible to use environment variables instead of the `.env` file.

@@ -21,6 +21,9 @@ A linguagem escolhida foi a [`Golang`](https://go.dev/) pelo interesse de aprend
 Esse software é simplesmente um loop que bate no endpoint de falta de água da Sanepar e, dependendo do retorno, envia uma mensagem para o tópico SNS que então envia a notificação para os inscritos no tópico. <br>
 O tipo de notificação no SNS fica a critério do desenvolvedor. O que estou utilizando é envio de SMS.
 
+Exemplo do SMS:<br>
+<img src="img/sms.png" width="350px" />
+
 ### Configuração
 O arquivo `.env` é responsável pela configuração do sistema.<br>
 Também é possível utilizar variáveis de ambiente ao invés do arquivo `.env`.
