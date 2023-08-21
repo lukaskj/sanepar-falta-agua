@@ -28,3 +28,7 @@ func SendSaneparRequest(baseUrl, clientId *string) types.TFaltaAguaResponse {
 
 	return body
 }
+
+func IsElegibleToSendNotification(faltaAguaResponse *types.TFaltaAguaResponse) bool {
+	return faltaAguaResponse.Mensagem != "NADA CONSTA" && faltaAguaResponse.Mensagem != "SEM ACESSO AO WEB SERVICE";
+}

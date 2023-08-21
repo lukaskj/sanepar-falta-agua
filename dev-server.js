@@ -11,6 +11,8 @@ const defaultResponse = {
   "NormalizacaoHora":"15:00",
 }
 
+// const defaultResponse = {"Mensagem":"SEM ACESSO AO WEB SERVICE","NormalizacaoData":"","NormalizacaoHora":"","PrevisaoData":"","PrevisaoHora":""}
+
 
 const requestListener = function (req, res) {
     res.writeHead(200);

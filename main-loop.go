@@ -35,7 +35,7 @@ func mainLoop() {
 	log.Println("[+] Starting...")
 	for {
 		response := SendSaneparRequest(&config.Config.SaneparBaseUrl, &config.Config.SaneparClientId)
-		if response.Mensagem != "NADA CONSTA" {
+		if IsElegibleToSendNotification(&response) {
 
 			messageToSend := fmt.Sprintf("%s\nPrevisão: %s %s\nNormalização: %s %s", config.Config.Env, response.PrevisaoData, response.PrevisaoHora, response.NormalizacaoData, response.NormalizacaoHora)
 			log.Printf("[+] Message: %s\n", messageToSend)
