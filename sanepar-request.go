@@ -9,12 +9,13 @@ import (
 	"github.com/lukaskj/sanepar-falta-agua/types"
 )
 
-func SendSaneparRequest(baseUrl, clientId *string) types.TFaltaAguaResponse {
+func SendSaneparRequest(baseUrl, clientId *string) (types.TFaltaAguaResponse, error) {
 	fullUrl := *baseUrl + *clientId
 
 	resp, err := http.Get(fullUrl)
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
+		return types.TFaltaAguaResponse{}, err;
 	}
 
 	rawBody, err := io.ReadAll(resp.Body)
@@ -26,7 +27,7 @@ func SendSaneparRequest(baseUrl, clientId *string) types.TFaltaAguaResponse {
 		log.Println(err)
 	}
 
-	return body
+	return body, nil
 }
 
 func IsElegibleToSendNotification(faltaAguaResponse *types.TFaltaAguaResponse) bool {

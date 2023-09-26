@@ -34,8 +34,8 @@ func mainLoop() {
 	log.Println()
 	log.Println("[+] Starting...")
 	for {
-		response := SendSaneparRequest(&config.Config.SaneparBaseUrl, &config.Config.SaneparClientId)
-		if IsElegibleToSendNotification(&response) {
+		response, err := SendSaneparRequest(&config.Config.SaneparBaseUrl, &config.Config.SaneparClientId)
+		if err == nil && IsElegibleToSendNotification(&response) {
 
 			messageToSend := fmt.Sprintf("%s\nPrevisão: %s %s\nNormalização: %s %s", config.Config.Env, response.PrevisaoData, response.PrevisaoHora, response.NormalizacaoData, response.NormalizacaoHora)
 			log.Printf("[+] Message: %s\n", messageToSend)
